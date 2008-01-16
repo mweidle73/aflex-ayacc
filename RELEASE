@@ -1,0 +1,27 @@
+
+AFLEX - AYACC
+-------------
+
+
+	***	This software was developed by the Arcadia project
+	***	at the University of California, Irvine.
+
+
+
+What did I do in this release :
+
+- I have prepared the src directories (alex/src and ayacc/src) for GNAT.
+  To compile aflex just do a 'gnatmake aflex' into the aflex/src directory.
+  To compile ayacc just do a 'gnatmake ayacc' into the ayacc/src directory.
+
+- I have made changes in aflex to make it handle characters with code > 127.
+  In fact aflex was only 7bits compliant, and any characters outside this
+  set was raising a Constraint_Error into the generated program.
+
+  This was an anoying problem I encountered with the TG (Test Driver
+  Generator) by Andre Spiegel. If you recompile TG with this version of
+  aflex you'll be able to put characters with code > 127 into your .ts
+  script.
+
+
+Pascal.
