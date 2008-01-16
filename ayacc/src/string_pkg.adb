@@ -204,7 +204,7 @@ package body string_pkg is
         UC (Mixed_String(Mixed_String'First));
         for i in Mixed_String'First + 1 .. Mixed_String'Last 
         loop
-          if Mixed_String(i-1) = '_' then
+          if Mixed_String(i-1) = '_' or Mixed_String(i-1) = '.' then
             UC (Mixed_String(i));
           else
             LC (Mixed_String(i));
@@ -224,6 +224,22 @@ package body string_pkg is
         return Mixed (S.all);
       end if; 
     end Mixed;
+
+    function Transform (S: String) return String_Type is
+      Transformed_String : String_Type := Create (S);
+    begin
+      if Transformed_String'Length /= 0 then
+        for i in Transformed_String'First + 1 .. Transformed_String'Last 
+        loop
+          if Transformed_String(i) = '-' then
+            Transformed_String(i) := '.';
+          end if;
+        end loop;
+        return Mixed (value (Transformed_String));
+      else
+        return Empty_String;
+      end if;
+    end Transform;
 
     function upper(s: string)
 	return string_type is

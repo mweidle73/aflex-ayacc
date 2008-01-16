@@ -62,7 +62,8 @@ package body Ayacc_File_Names is
     begin
       return Is_Alphabetic(Ch) or else
              Ch in '0' .. '9'  or else
-             Ch = '_';
+             Ch = '_' or else
+	     Ch = '-';
     end Is_AlphaNum_or_Underscore;
 
   use String_Pkg;
@@ -86,8 +87,8 @@ package body Ayacc_File_Names is
 	 end if;
        end loop Check_Remaining_Characters;
 
-       return Value (Mixed (Filename_Without_Extension (End_of_Directory ..
-                            Filename_Without_Extension'Last)));
+       return Value (Transform (Filename_Without_Extension (End_of_Directory ..
+                                Filename_Without_Extension'Last)));
     else
       return "";
     end if;

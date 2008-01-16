@@ -277,6 +277,13 @@ package string_pkg is
       --| Raises illegal_alloc if string space has been improperly
       --| released.  (See procedures mark/release.)
 
+    function Transform (S: String)
+	return String_Type;
+  
+      --| Raises: Illegal_Alloc
+      --| Effects:
+      --| Return a value that contains exactly those characters in s with
+      --| the exception that all '-' characters are replaced with '.'.
 
 -- Heap Management (including object/value binding):
 --
