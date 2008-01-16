@@ -459,12 +459,13 @@ package body MAIN_BODY is
 
   -- readin - read in the rules section of the input file(s)
   procedure READIN is 
+    BNAME        : TSTRING.VSTRING := MISC.BASENAME;
   begin
     SKELETON_MANAGER.SKELOUT; 
-    TEXT_IO.PUT("with " & TSTRING.STR(MISC.BASENAME) & "_dfa" & "; "); 
-    TEXT_IO.PUT_LINE("use " & TSTRING.STR(MISC.BASENAME) & "_dfa" & "; "); 
-    TEXT_IO.PUT("with " & TSTRING.STR(MISC.BASENAME) & "_io" & "; "); 
-    TEXT_IO.PUT_LINE("use " & TSTRING.STR(MISC.BASENAME) & "_io" & "; "); 
+    TEXT_IO.PUT("with " & TSTRING.TRANSFORM(BNAME) & "_dfa" & "; ");
+    TEXT_IO.PUT_LINE("use " & TSTRING.TRANSFORM(BNAME) & "_dfa" & "; ");
+    TEXT_IO.PUT("with " & TSTRING.TRANSFORM(BNAME) & "_io" & "; ");
+    TEXT_IO.PUT_LINE("use " & TSTRING.TRANSFORM(BNAME) & "_io" & "; ");
     MISC.LINE_DIRECTIVE_OUT; 
 
     PARSER.YYPARSE; 

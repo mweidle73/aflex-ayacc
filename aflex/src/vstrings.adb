@@ -16,6 +16,19 @@ package body VSTRINGS is
 
   -- bodies of visible operations
 
+  function TRANSFORM(FROM : VSTRING) return STRING is
+
+    TEMP : VSTRING := FROM;
+
+    begin -- TRANSFORM
+      for INDEX in FIRST .. TEMP.LEN loop
+         if TEMP.VALUE(INDEX) = '-' then
+            TEMP.VALUE(INDEX) := '.';
+         end if;
+      end loop;
+      return(TEMP.VALUE(FIRST .. TEMP.LEN));
+    end TRANSFORM;
+
   function LEN(FROM : VSTRING) return STRINDEX is
 
     begin -- LEN

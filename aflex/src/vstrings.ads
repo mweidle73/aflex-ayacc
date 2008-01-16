@@ -73,6 +73,8 @@ package VSTRINGS is
   function REPLACE(TARGET: VSTRING; ITEM: CHARACTER;
                    POSITION: STRINDEX := FIRST) return VSTRING;
 
+  function TRANSFORM(FROM : VSTRING) return STRING;
+
 -- Concatenation
 
   function "&" (LEFT: VSTRING; RIGHT : VSTRING) return VSTRING;
