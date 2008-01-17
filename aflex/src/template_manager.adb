@@ -616,7 +616,7 @@ VSTR("")
   begin
     EXTERNAL_FILE_MANAGER.GET_DFA_FILE(DFA_OUT_FILE); 
     TEXT_IO.PUT_LINE(DFA_OUT_FILE, "package " & TSTRING.TRANSFORM(BNAME) &
-      "_dfa" & " is"); 
+      "_DFA" & " is");
 
     if (DDEBUG) then 
 
@@ -626,17 +626,17 @@ VSTR("")
       TEXT_IO.PUT_LINE(DFA_OUT_FILE, "aflex_debug : boolean := false;"); 
     end if; 
     TEMPLATE_OUT(DFA_OUT_FILE, DFA_TEMPLATE, DFA_CURRENT_LINE); 
-    TEXT_IO.PUT_LINE(DFA_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_dfa;"
+    TEXT_IO.PUT_LINE(DFA_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_DFA;"
       ); 
     TEXT_IO.NEW_LINE(DFA_OUT_FILE); 
-    TEXT_IO.PUT(DFA_OUT_FILE, "with " & TSTRING.TRANSFORM(BNAME) & "_dfa" &
+    TEXT_IO.PUT(DFA_OUT_FILE, "with " & TSTRING.TRANSFORM(BNAME) & "_DFA" &
       "; "); 
-    TEXT_IO.PUT_LINE(DFA_OUT_FILE, "use " & TSTRING.TRANSFORM(BNAME) & "_dfa"
+    TEXT_IO.PUT_LINE(DFA_OUT_FILE, "use " & TSTRING.TRANSFORM(BNAME) & "_DFA"
       & "; "); 
     TEXT_IO.PUT_LINE(DFA_OUT_FILE, "package body " & TSTRING.TRANSFORM(BNAME)
-      & "_dfa" & " is"); 
+      & "_DFA" & " is");
     TEMPLATE_OUT(DFA_OUT_FILE, DFA_TEMPLATE, DFA_CURRENT_LINE); 
-    TEXT_IO.PUT_LINE(DFA_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_dfa;"
+    TEXT_IO.PUT_LINE(DFA_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_DFA;"
       ); 
   end GENERATE_DFA_FILE; 
 
@@ -645,19 +645,19 @@ VSTR("")
     BNAME       : TSTRING.VSTRING := MISC.BASENAME;
   begin
     EXTERNAL_FILE_MANAGER.GET_IO_FILE(IO_OUT_FILE); 
-    TEXT_IO.PUT(IO_OUT_FILE, "with " & TSTRING.TRANSFORM(BNAME) & "_dfa" &
+    TEXT_IO.PUT(IO_OUT_FILE, "with " & TSTRING.TRANSFORM(BNAME) & "_DFA" &
       "; "); 
-    TEXT_IO.PUT_LINE(IO_OUT_FILE, "use " & TSTRING.TRANSFORM(BNAME) & "_dfa"
+    TEXT_IO.PUT_LINE(IO_OUT_FILE, "use " & TSTRING.TRANSFORM(BNAME) & "_DFA"
       & "; "); 
     TEMPLATE_OUT(IO_OUT_FILE, IO_TEMPLATE, IO_CURRENT_LINE); 
     TEXT_IO.PUT_LINE(IO_OUT_FILE, "package " & TSTRING.TRANSFORM(BNAME) &
-      "_io" & " is"); 
+      "_IO" & " is");
     TEMPLATE_OUT(IO_OUT_FILE, IO_TEMPLATE, IO_CURRENT_LINE); 
-    TEXT_IO.PUT_LINE(IO_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_io;")
+    TEXT_IO.PUT_LINE(IO_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_IO;")
       ; 
     TEXT_IO.NEW_LINE(IO_OUT_FILE); 
     TEXT_IO.PUT_LINE(IO_OUT_FILE, "package body " & TSTRING.TRANSFORM(BNAME)
-      & "_io" & " is"); 
+      & "_IO" & " is");
     TEMPLATE_OUT(IO_OUT_FILE, IO_TEMPLATE, IO_CURRENT_LINE); 
     -- If we're generating a scanner for interactive mode we need to generate
     -- a YY_INPUT that stops at the end of each line
@@ -668,7 +668,7 @@ VSTR("")
 	    "            exit; -- in interactive mode return at end of line.");
     end if;
     TEMPLATE_OUT(IO_OUT_FILE, IO_TEMPLATE, IO_CURRENT_LINE);     
-    TEXT_IO.PUT_LINE(IO_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_io;")
+    TEXT_IO.PUT_LINE(IO_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_IO;")
       ; 
   end GENERATE_IO_FILE; 
 

@@ -462,10 +462,10 @@ package body MAIN_BODY is
     BNAME        : TSTRING.VSTRING := MISC.BASENAME;
   begin
     SKELETON_MANAGER.SKELOUT; 
-    TEXT_IO.PUT("with " & TSTRING.TRANSFORM(BNAME) & "_dfa" & "; ");
-    TEXT_IO.PUT_LINE("use " & TSTRING.TRANSFORM(BNAME) & "_dfa" & "; ");
-    TEXT_IO.PUT("with " & TSTRING.TRANSFORM(BNAME) & "_io" & "; ");
-    TEXT_IO.PUT_LINE("use " & TSTRING.TRANSFORM(BNAME) & "_io" & "; ");
+    TEXT_IO.PUT("with " & TSTRING.TRANSFORM(BNAME) & "_DFA" & "; ");
+    TEXT_IO.PUT_LINE("use " & TSTRING.TRANSFORM(BNAME) & "_DFA" & "; ");
+    TEXT_IO.PUT("with " & TSTRING.TRANSFORM(BNAME) & "_IO" & "; ");
+    TEXT_IO.PUT_LINE("use " & TSTRING.TRANSFORM(BNAME) & "_IO" & "; ");
     MISC.LINE_DIRECTIVE_OUT; 
 
     PARSER.YYPARSE; 
