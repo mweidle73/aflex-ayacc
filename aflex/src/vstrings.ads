@@ -74,6 +74,7 @@ package VSTRINGS is
                    POSITION: STRINDEX := FIRST) return VSTRING;
 
   function TRANSFORM(FROM : VSTRING) return STRING;
+  function MIXED (FROM : VSTRING) return STRING;
 
 -- Concatenation
 

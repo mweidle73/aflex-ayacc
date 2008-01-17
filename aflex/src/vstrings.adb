@@ -1,9 +1,11 @@
-
+with Ada.Characters.Handling; use Ada.Characters.Handling;
+
 package body VSTRINGS is
 
   -- local declarations
 
   FILL_CHAR : constant CHARACTER := ASCII.NUL;
+
 
   procedure FORMAT(THE_STRING : in out VSTRING; OLDLEN : in STRINDEX := LAST) is
     -- fill the string with FILL_CHAR to null out old values
@@ -26,8 +28,29 @@ package body VSTRINGS is
             TEMP.VALUE(INDEX) := '.';
          end if;
       end loop;
-      return(TEMP.VALUE(FIRST .. TEMP.LEN));
+      return MIXED (TEMP);
     end TRANSFORM;
+
+  function MIXED (FROM : VSTRING) return STRING is
+
+    TEMP : VSTRING := FROM;
+
+    begin -- MIXED
+      if FROM.LEN /= 0 then
+        TEMP.VALUE(FIRST) := To_Upper (TEMP.VALUE(FIRST));
+        for i in FIRST + 1 .. TEMP.LEN
+        loop
+          if TEMP.VALUE(i-1) = '_' or TEMP.VALUE(i-1) = '.' then
+            TEMP.VALUE(i) := To_Upper (TEMP.VALUE(i));
+          else
+            TEMP.VALUE(i) := To_Lower (TEMP.VALUE(i));
+          end if;
+        end loop;
+        return (TEMP.VALUE(FIRST .. TEMP.LEN));
+      else
+        return "";
+      end if;
+    end MIXED;
 
   function LEN(FROM : VSTRING) return STRINDEX is
 
