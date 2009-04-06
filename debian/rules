@@ -1,0 +1,50 @@
+#!/usr/bin/make -f
+
+tmpdir = $(CURDIR)/debian/tmp
+
+configure: configure-stamp
+configure-stamp:
+	touch $@
+
+build: build-arch build-indep
+build-arch: build-stamp
+build-indep:
+build-stamp: configure-stamp
+	$(MAKE) -C aflex/src all
+	$(MAKE) -C ayacc/src all
+	touch $@
+
+install: install-stamp
+install-stamp: build-stamp
+	$(MAKE) -C aflex/src install PREFIX=/usr DESTDIR=$(tmpdir)
+	$(MAKE) -C ayacc/src install PREFIX=/usr DESTDIR=$(tmpdir)
+	touch $@
+
+binary: binary-arch binary-indep
+binary-indep:
+binary-arch: install-stamp
+	dh_testdir
+	dh_testroot
+
+	dh_installdirs -a
+	dh_install -a
+	dh_strip
+	dh_fixperms
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+clean:
+	dh_testdir
+	dh_testroot
+
+	rm -f install-stamp build-stamp configure-stamp
+
+	$(MAKE) -C aflex/src clean PREFIX=/usr DESTDIR=$(tmpdir)
+	$(MAKE) -C ayacc/src clean PREFIX=/usr DESTDIR=$(tmpdir)
+
+	dh_clean
+
+.PHONY: binary binary-arch binary-indep build build-arch build-indep clean
+.PHONY: clean

@@ -1,0 +1,12 @@
+build-stamp
+configure-stamp
+install-stamp
+*.ali
+*.o
+debian/tmp
+debian/*.substvars
+DEBIAN
+aflex/src/aflex
+ayacc/src/ayacc
+debian/aflex
+debian/ayacc

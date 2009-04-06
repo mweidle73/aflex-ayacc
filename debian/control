@@ -1,0 +1,24 @@
+Source: aflex-ayacc
+Section: devel
+Priority: optional
+Standards-Version: 3.8.0
+Maintainer: Torsten Hilbrich <torsten.hilbrich@secunet.com>
+Build-Depends: gnat | gnat-4.2 | gnat-4.1, debhelper (>= 5)
+
+Package: aflex
+Section: devel
+Priority: optional
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: The Ada flex utility
+  This is the flex utility that is written in Ada and generate Ada output.
+
+Package: ayacc
+Section: devel
+Priority: optional
+Architecture: any
+Depends: ${shlibs:Depends}
+Recommends: aflex
+Description: The Ada yacc utility
+  This is the yacc utility that is written in Ada and generate Ada output.
+

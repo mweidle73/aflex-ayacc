@@ -1,0 +1,61 @@
+This package is available from:
+
+  http://www.ics.uci.edu/~self/aflex-ayacc_1.4a.tar.Z
+  http://www.ics.uci.edu/~self/aflex_gnat_beta.tgz
+  http://www.ics.uci.edu/~self/ayacc_gnat_beta.tgz
+
+Copyright: 
+
+ Copyright (c) 1990 Regents of the University of California.
+ All rights reserved.
+
+ This software was developed by the Arcadia project
+ at the University of California, Irvine.
+
+-- Redistribution and use in source and binary forms are permitted,
+-- subject to the restriction noted below, provided that the above
+-- copyright notice and this paragraph and the following paragraphs are
+-- duplicated in all such forms and that any documentation, advertising
+-- materials, and other materials related to such distribution and use
+-- acknowledge that the software was developed by the University of
+-- California, Irvine.  The name of the University may not be used to
+-- endorse or promote products derived from this software without
+-- specific prior written permission.  THIS SOFTWARE IS PROVIDED ``AS
+-- IS'' AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, WITHOUT
+-- LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+-- A PARTICULAR PURPOSE.
+--
+-- Use of this software in any way or in any form, source or binary,
+-- and redistribution of such is not allowed in any country which
+-- prohibits disclaimers of any implied warranties of merchantability
+-- or fitness for a particular purpose or any disclaimers of a similar
+-- nature.
+--
+-- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+-- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+-- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION
+-- (INCLUDING, BUT NOT LIMITED TO, LOST PROFITS) EVEN IF THE UNIVERSITY
+-- OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+You may give this software to others, but we prefer that those who can
+get it directly from us to insure that all users are running the
+latest version.  We also ask that you send electronic mail to the
+address irus-software-request@ics.uci.edu giving your name, your
+organization, a paper mail address, and your e-mail address (either an
+Internet address or a UUCP path relative to a well-known site such as
+uunet.)  A form is provided below for your convenience.  We will use
+this information to set up a mailing list to announce new versions of
+aflex and ayacc, as well as new software that is expected to be made
+available.
+
+The distribution is currently available on the machine
+liege.ics.uci.edu in ~ftp/pub/irus/aflex-ayacc_1.4a.tar.Z.  Full
+instructions for retrieving and unpacking are enclosed below.  If you
+have trouble retrieving or unpacking the distribution send mail to
+irus-software-request@ics.uci.edu (or via UUCP to
+uunet!sdcsvax!ucivax!irus-software-request) If you have trouble with
+the tools information on how to report bugs is present within their
+directories.
+
+
+

@@ -1,6 +1,6 @@
 TARGET = ayacc
-PREFIX = /bin
-DESTDIR = /usr/local
+PREFIX = /usr/local
+BINDIR = $(PREFIX)/bin
 
 all: $(TARGET)
 
@@ -11,6 +11,6 @@ clean:
 	gnatclean $(TARGET)
 
 install: $(TARGET)
-	install -v -m 755 -D $(TARGET) $(DESTDIR)/$(PREFIX)/$(TARGET)
+	install -v -m 755 -D $(TARGET) $(DESTDIR)/$(BINDIR)/$(TARGET)
 
 .PHONY: all clean install
