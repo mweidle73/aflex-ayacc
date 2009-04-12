@@ -1,3 +1,9 @@
+aflex-ayacc (1.4-2) unstable; urgency=low
+
+  * Added patch which requires a separate compilation unit for yywrap().
+
+ -- Matthias Weidle <matthias.weidle@secunet.com>  Mon, 13 Apr 2009 01:32:43 +0200
+
 aflex-ayacc (1.4-1) unstable; urgency=low
 
   * First version.
