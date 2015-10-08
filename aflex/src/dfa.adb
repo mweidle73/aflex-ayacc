@@ -82,8 +82,8 @@ package body DFA is
                                    NUM_STATES : in INTEGER; 
                                    ACCSET     : in INT_PTR; 
                                    NACC       : in INTEGER) is 
-    NS, AR              : INTEGER; 
-    STATE_VAR, TYPE_VAR : STATE_ENUM; 
+    NS, AR   : INTEGER;
+    TYPE_VAR : STATE_ENUM;
 
     use MISC_DEFS, MISC, TEXT_IO; 
   begin
@@ -406,7 +406,7 @@ package body DFA is
     DUPLIST, TARGFREQ, TARGSTATE, STATE                : C_SIZE_ARRAY; 
     SYMLIST                                            : C_SIZE_BOOL_ARRAY; 
     HASHVAL, NUMSTATES, DSIZE                          : INTEGER; 
-    NSET, DSET                                         : INT_PTR; 
+    NSET, NSET2, DSET                                  : INT_PTR;
     TARGPTR, TOTALTRANS, I, J, COMSTATE, COMFREQ, TARG : INTEGER; 
     NUM_START_STATES, TODO_HEAD, TODO_NEXT             : INTEGER; 
     SNSRESULT                                          : BOOLEAN; 
@@ -493,7 +493,7 @@ package body DFA is
         NSET(NUMSTATES) := NFA.MKBRANCH(SCBOL(CNT/2), SCSET(CNT/2)); 
       end if; 
 
-      DFA.EPSCLOSURE(NSET, NUMSTATES, ACCSET, NACC, HASHVAL, NSET); 
+      DFA.EPSCLOSURE(NSET, NUMSTATES, ACCSET, NACC, HASHVAL, NSET2);
 
       SNSTODS(NSET, NUMSTATES, ACCSET, NACC, HASHVAL, DS, SNSRESULT); 
       if (SNSRESULT) then 
@@ -545,7 +545,7 @@ package body DFA is
           if (DUPLIST(SYM) = NIL) then 
           -- symbol has unique out-transitions
             NUMSTATES := SYMFOLLOWSET(DSET, DSIZE, SYM, NSET); 
-            DFA.EPSCLOSURE(NSET, NUMSTATES, ACCSET, NACC, HASHVAL, NSET); 
+            DFA.EPSCLOSURE(NSET, NUMSTATES, ACCSET, NACC, HASHVAL, NSET2);
 
             SNSTODS(NSET, NUMSTATES, ACCSET, NACC, HASHVAL, NEWDS, SNSRESULT); 
             if (SNSRESULT) then 

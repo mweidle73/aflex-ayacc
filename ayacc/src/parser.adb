@@ -83,7 +83,6 @@ package body Parser is
 
      procedure Augment_Grammar(Users_Start_Symbol : in Grammar_Symbol) is  
      -- Inserts S' -> S $end as a rule in the rule table.
-         Start_Sym      : Grammar_Symbol; 
          Augmented_Rule : Rule;  
      begin 
          Start_Defined  := True; 
@@ -259,7 +258,6 @@ package body Parser is
 
 	Precedence_Level : Precedence := 0;
         Next_Token       : Ayacc_Token;
-	ID               : Grammar_Symbol;
 
 	procedure Parse_Start_Symbol is
 	    Users_Start_Symbol : Grammar_Symbol;

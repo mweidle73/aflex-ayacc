@@ -449,8 +449,8 @@ package body MISC is
 
         -- \<octal>
         declare
-          C, ESC_CHAR : CHARACTER; 
-          SPTR        : INTEGER := TSTRING.FIRST + 1; 
+          ESC_CHAR : CHARACTER;
+          SPTR     : INTEGER := TSTRING.FIRST + 1;
         begin
           ESC_CHAR := OTOI(TSTRING.SLICE(ARR, TSTRING.FIRST + 1, TSTRING.LEN(ARR
             ))); 

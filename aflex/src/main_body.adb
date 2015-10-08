@@ -246,7 +246,6 @@ package body MAIN_BODY is
     SAWCMPFLAG, USE_STDOUT : BOOLEAN; 
     OUTPUT_FILE            : FILE_TYPE; 
     INPUT_FILE             : FILE_TYPE; 
-    I                      : INTEGER; 
     ARG_CNT                : INTEGER; 
     FLAG_POS               : INTEGER; 
     ARG                    : VSTRING; 

@@ -526,8 +526,6 @@ package body Lists is
 
         Placeinlist1 : Element_Pointer := List1.Head;
         Placeinlist2 : Element_Pointer := List2.Head;
-        Contents1    : Itemtype;
-        Contents2    : Itemtype;
 
         --| This function tests to see if two lists are equal.  Two lists
         --| are equal if for all the elements of List1 the corresponding

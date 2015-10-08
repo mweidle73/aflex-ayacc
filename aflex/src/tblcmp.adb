@@ -276,7 +276,6 @@ package body TBLCMP is
   -- consecutive unused records in the chk and nxt arrays
 
     I                                              : INTEGER; 
-    STATE_PTR, CHK_PTR, PTR_TO_LAST_ENTRY_IN_STATE : INT_PTR; 
     CNT, SCNT                                      : INTEGER; 
     -- if there are too many out-transitions, put the state at the end of
     -- nxt and chk

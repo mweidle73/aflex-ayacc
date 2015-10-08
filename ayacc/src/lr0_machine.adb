@@ -429,8 +429,6 @@ package body LR0_Machine is
 	Iterator      : Item_Iterator;
 	Temp_Item     : Item;
 	New_Item      : Item;
-	Index         : Yield_Index;
-	Last_Index    : Yield_Index;
 	Closure_Index : Item_Array_Index;  -- for looping thru Closure_Items
 	Next_Free     : Item_Array_Index;  -- next free in closure_items
 	Kernel_Ptr    : Item_Array_Pointer;  -- points to kernel
@@ -493,8 +491,6 @@ package body LR0_Machine is
 	Iterator      : Item_Iterator;
 	Temp_Item     : Item;
 	New_Item      : Item;
-	Index         : Yield_Index;
-	Last_Index    : Yield_Index;
 	Closure_Index : Item_Array_Index;  -- for looping thru Closure_Items
 
     begin
@@ -559,7 +555,6 @@ package body LR0_Machine is
 			Trans_Sym  : Grammar_Symbol) return Parse_State is
 	Last      : constant Item_Array_Index := 
 		     Item_Array_Index(Size_of(Kernel_Set));
-	Temp_Item : Item;
 	Iterator  : Item_Set_Pack.Set_Iterator;
 	Kernel    : Item_Array(1..Last);
 	S         : Parse_State;

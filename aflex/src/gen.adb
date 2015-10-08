@@ -348,9 +348,8 @@ package body GEN is
   -- gentabs - generate data statements for the transition tables
 
   procedure GENTABS is
-    I, J, K, NACC, TOTAL_STATES : INTEGER;
-    ACCSET, ACC_ARRAY           : INT_PTR;
-    ACCNUM                      : INTEGER;
+    I, K, TOTAL_STATES : INTEGER;
+    ACC_ARRAY          : INT_PTR;
     END_OF_BUFFER_ACTION        : INTEGER := NUM_RULES + 1;
     -- *everything* is done in terms of arrays starting at 1, so provide
     -- a null entry for the zero element of all C arrays
@@ -569,7 +568,6 @@ package body GEN is
 
   procedure MAKE_TABLES is
     DID_EOF_RULE      : BOOLEAN := FALSE;
-    TRANS_OFFSET_TYPE : STRING(1 .. 7);
     TOTAL_TABLE_SIZE  : INTEGER := TBLEND + NUMECS + 1;
     BUF               : VSTRING;
   begin

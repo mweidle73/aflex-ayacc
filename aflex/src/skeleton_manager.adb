@@ -313,7 +313,6 @@ VSTR("ERROR tried to output beyond end of skeleton file")
 
   procedure SKELOUT is 
     BUF      : FILE_STRING.VSTRING; 
-    LINE_LEN : INTEGER; 
 -- UMASS CODES :
     Umass_Codes : Boolean := False;
     -- Indicates whether or not current line of the template
