@@ -1,0 +1,51 @@
+#!/bin/sh
+
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd "$(dirname "$0")" && pwd -P)
+REPOSITORY_ROOT=$(CDPATH= cd "$SCRIPT_DIR/../.." && pwd -P)
+WORK_DIR=$(mktemp -d)
+
+cleanup()
+{
+    rm -rf "$WORK_DIR"
+}
+trap cleanup EXIT HUP INT TERM
+
+echo "ci: building Aflex and Ayacc"
+make -C "$REPOSITORY_ROOT" clean
+make -C "$REPOSITORY_ROOT" -j8
+
+echo "ci: generating the calculator parser and scanner"
+cp "$REPOSITORY_ROOT/ayacc/examples/calc/calc.y" "$WORK_DIR/"
+cp "$REPOSITORY_ROOT/ayacc/examples/calc/calc_lex.l" "$WORK_DIR/"
+cp "$REPOSITORY_ROOT/ayacc/examples/calc/driver.a" "$WORK_DIR/"
+cp "$REPOSITORY_ROOT/ayacc/examples/calc/calc.input" "$WORK_DIR/"
+cp "$SCRIPT_DIR/fixtures/calc_lex_io-yywrap.adb" "$WORK_DIR/"
+
+cd "$WORK_DIR"
+"$REPOSITORY_ROOT/ayacc/src/ayacc" calc.y > ayacc.log
+"$REPOSITORY_ROOT/aflex/src/aflex" calc_lex.l
+
+for generated in \
+    calc.a \
+    calc_goto.ads \
+    calc_lex.a \
+    calc_lex_dfa.a \
+    calc_lex_io.a \
+    calc_shift_reduce.ads \
+    calc_tokens.ads
+do
+    test -s "$generated"
+done
+
+echo "ci: compiling and executing the generated calculator"
+for source in calc.a calc_lex.a calc_lex_dfa.a calc_lex_io.a driver.a
+do
+    gnatchop -w "$source"
+done
+gnatmake -q -gnat2022 driver.adb
+printf '%s\n' calc.input | ./driver > calc.actual
+diff -u "$SCRIPT_DIR/fixtures/calc.expected" calc.actual
+
+echo "ci: all generator checks passed"
