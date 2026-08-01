@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aflex and Ayacc 1.4a archive</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Historical Ada tooling</p>
+    <h1>Aflex and Ayacc 1.4a</h1>
+    <p class="lead">
+      This repository preserves the University of California, Irvine Aflex
+      lexical-analyzer generator and Ayacc parser generator used by Abuild.
+    </p>
+
+    <section>
+      <h2>Documentation</h2>
+      <div class="cards">
+        <a class="card" href="aflex.html">
+          <strong>Aflex manual</strong>
+          <span>Scanner generation, input format and runtime interface</span>
+        </a>
+        <a class="card" href="ayacc.html">
+          <strong>Ayacc manual</strong>
+          <span>Grammar format, parser generation and command-line options</span>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Repository branches</h2>
+      <dl>
+        <dt><code>master</code></dt>
+        <dd>The frozen original source import.</dd>
+        <dt><code>abuild</code></dt>
+        <dd>The compatibility patches used by the Abuild submodule.</dd>
+        <dt><code>abuild-gh</code></dt>
+        <dd>The Abuild patch set plus GitHub CI and this documentation site.</dd>
+      </dl>
+    </section>
+
+    <section class="notice">
+      <h2>Maintenance status</h2>
+      <p>
+        This is a compatibility archive, not the current upstream. New projects
+        should evaluate the maintained
+        <a href="https://github.com/Ada-France/aflex">Ada-France Aflex</a> and
+        <a href="https://github.com/Ada-France/ayacc">Ada-France Ayacc</a>
+        repositories. Their code is intentionally not synchronized into this
+        historical branch family.
+      </p>
+    </section>
+
+    <section>
+      <h2>Source and licensing</h2>
+      <p>
+        See the <a href="https://github.com/mweidle73/aflex-ayacc">repository
+        overview</a> for the maintained branch model, build instructions and
+        CI coverage. The preserved historical notices are collected in
+        <a href="https://github.com/mweidle73/aflex-ayacc/blob/abuild/COPYING">COPYING</a>.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

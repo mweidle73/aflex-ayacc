@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd "$(dirname "$0")" && pwd -P)
+REPOSITORY_ROOT=$(CDPATH= cd "$SCRIPT_DIR/../.." && pwd -P)
+OUTPUT_DIR=${1:-$REPOSITORY_ROOT/.github/site}
+
+rm -rf "$OUTPUT_DIR"
+mkdir -p "$OUTPUT_DIR"
+
+cp "$REPOSITORY_ROOT/.github/pages/index.html" "$OUTPUT_DIR/"
+cp "$REPOSITORY_ROOT/.github/pages/style.css" "$OUTPUT_DIR/"
+
+groff -mandoc -Thtml \
+    "$REPOSITORY_ROOT/aflex/doc/aflex.man" > "$OUTPUT_DIR/aflex.html"
+groff -mandoc -Thtml \
+    "$REPOSITORY_ROOT/ayacc/doc/old_docs/ayacc.manpage" > \
+    "$OUTPUT_DIR/ayacc.html"
+
+for page in index.html aflex.html ayacc.html
+do
+    test -s "$OUTPUT_DIR/$page"
+done
+
+echo "pages: generated documentation in $OUTPUT_DIR"

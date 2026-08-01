@@ -1,0 +1,90 @@
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.55;
+  --accent: #855400;
+  --surface: #f7f1e5;
+  --border: #d8c9aa;
+}
+
+body {
+  margin: 0;
+}
+
+main {
+  max-width: 58rem;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+
+h1 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  line-height: 1;
+}
+
+h2 {
+  margin-top: 2.8rem;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 750;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.lead {
+  max-width: 46rem;
+  font-size: 1.3rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1.2rem;
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+}
+
+.card:hover {
+  border-color: var(--accent);
+}
+
+dt {
+  margin-top: 1rem;
+  font-weight: 700;
+}
+
+dd {
+  margin-left: 0;
+}
+
+.notice {
+  padding: 0.1rem 1.4rem 1.4rem;
+  background: var(--surface);
+  color: #282017;
+  border-left: 0.35rem solid var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: #f0bd60;
+    --surface: #2d271e;
+    --border: #5c503f;
+  }
+
+  .notice {
+    color: #f5efe5;
+  }
+}
