@@ -1,0 +1,151 @@
+Aflex and Ayacc licensing notices
+=================================
+
+This repository preserves a historical distribution containing code under
+multiple University of California notices as well as public-domain material.
+The principal notices are reproduced below. Copyright and license notices in
+individual files remain applicable.
+
+
+IRUS Aflex/Ayacc distribution
+-----------------------------
+
+Copyright (c) 1990 Regents of the University of California.
+All rights reserved.
+
+This software was developed by the Arcadia project
+at the University of California, Irvine.
+
+Redistribution and use in source and binary forms are permitted,
+subject to the restriction noted below, provided that the above
+copyright notice and this paragraph and the following paragraphs are
+duplicated in all such forms and that any documentation, advertising
+materials, and other materials related to such distribution and use
+acknowledge that the software was developed by the University of
+California, Irvine.  The name of the University may not be used to
+endorse or promote products derived from this software without
+specific prior written permission.  THIS SOFTWARE IS PROVIDED ``AS
+IS'' AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, WITHOUT
+LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE.
+
+Use of this software in any way or in any form, source or binary,
+and redistribution of such is not allowed in any country which
+prohibits disclaimers of any implied warranties of merchantability
+or fitness for a particular purpose or any disclaimers of a similar
+nature.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION
+(INCLUDING, BUT NOT LIMITED TO, LOST PROFITS) EVEN IF THE UNIVERSITY
+OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+Aflex
+-----
+
+Copyright (c) 1990 Regents of the University of California.
+All rights reserved.
+
+This software was developed by John Self of the Arcadia project
+at the University of California, Irvine.
+
+Redistribution and use in source and binary forms are permitted
+provided that the above copyright notice and this paragraph are
+duplicated in all such forms and that any documentation,
+advertising materials, and other materials related to such
+distribution and use acknowledge that the software was developed
+by the University of California, Irvine.  The name of the
+University may not be used to endorse or promote products derived
+from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+This program is based on the flex program written by Vern Paxson.
+
+
+Ayacc
+-----
+
+Copyright (c) 1990 Regents of the University of California.
+All rights reserved.
+
+The primary authors of ayacc were David Taback and Deepak Tolani.
+Enhancements were made by Ronald J. Schmalz.
+Further enhancements were made by Yidong Chen.
+
+Redistribution and use in source and binary forms are permitted
+provided that the above copyright notice and this paragraph are
+duplicated in all such forms and that any documentation,
+advertising materials, and other materials related to such
+distribution and use acknowledge that the software was developed
+by the University of California, Irvine.  The name of the
+University may not be used to endorse or promote products derived
+from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+
+Flex-derived code
+-----------------
+
+Copyright (c) 1989 The Regents of the University of California.
+All rights reserved.
+
+This code is derived from software contributed to Berkeley by
+Vern Paxson.
+
+The United States Government has rights in this work pursuant to
+contract no. DE-AC03-76SF00098 between the United States Department of
+Energy and the University of California.
+
+Redistribution and use in source and binary forms are permitted
+provided that the above copyright notice and this paragraph are
+duplicated in all such forms and that any documentation,
+advertising materials, and other materials related to such
+distribution and use acknowledge that the software was developed
+by the University of California, Berkeley.  The name of the
+University may not be used to endorse or promote products derived
+from this software without specific prior written permission.
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+
+
+VSTRINGS
+--------
+
+The `aflex/src/vstrings.ads` and `aflex/src/vstrings.adb` units carry the
+following notice:
+
+This software is released to the Public Domain (note:
+software released to the Public Domain is not subject
+to copyright protection).
+Restrictions on use or distribution: NONE
+
+This software and its documentation are provided "AS IS" and
+without any expressed or implied warranties whatsoever.
+No warranties as to performance, merchantability, or fitness
+for a particular purpose exist.
+
+Because of the diversity of conditions and hardware under
+which this software may be used, no warranty of fitness for
+a particular purpose is offered. The user is advised to
+test the software thoroughly before relying on it. The user
+must assume the entire risk and liability of using this
+software.
+
+In no event shall any person or organization of people be
+held responsible for any direct, indirect, consequential
+or inconsequential damages or lost profits.
+
+
+Other historical material
+-------------------------
+
+Some examples include their own attribution or public-domain notices. Those
+notices remain with the corresponding files and are not replaced by this
+summary.
