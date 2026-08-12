@@ -23,7 +23,7 @@
 -- $Header: /dc/uc/self/arcadia/aflex/ada/src/RCS/mainB.a,v 1.26 1992/12/29 22:46:15 self Exp self $ 
 
 with MISC_DEFS, MISC, COMMAND_LINE_INTERFACE, DFA, ECS, GEN, TEXT_IO, PARSER; 
-with MAIN_BODY, TSTRING, PARSE_TOKENS, SKELETON_MANAGER, EXTERNAL_FILE_MANAGER; 
+with MAIN_BODY, TSTRING, PARSE_TOKENS, SKELETON_MANAGER, TEMPLATE_MANAGER;
 with EXTERNAL_FILE_MANAGER, INT_IO; use MISC_DEFS, COMMAND_LINE_INTERFACE, 
   TSTRING, EXTERNAL_FILE_MANAGER; 
 
@@ -47,6 +47,14 @@ package body MAIN_BODY is
     if (IS_OPEN(SKELFILE)) then 
       CLOSE(SKELFILE); 
     end if; 
+
+    if (IS_OPEN(DFA_TEMPLATE_FILE)) then
+      CLOSE(DFA_TEMPLATE_FILE);
+    end if;
+
+    if (IS_OPEN(IO_TEMPLATE_FILE)) then
+      CLOSE(IO_TEMPLATE_FILE);
+    end if;
 
     if (IS_OPEN(TEMP_ACTION_FILE)) then 
       DELETE(TEMP_ACTION_FILE); 
@@ -250,7 +258,11 @@ package body MAIN_BODY is
     FLAG_POS               : INTEGER; 
     ARG                    : VSTRING; 
     SKELNAME               : VSTRING; 
+    DFA_TEMPLATE_NAME      : VSTRING;
+    IO_TEMPLATE_NAME       : VSTRING;
     SKELNAME_USED          : BOOLEAN := FALSE; 
+    DFA_TEMPLATE_NAME_USED : BOOLEAN := FALSE;
+    IO_TEMPLATE_NAME_USED  : BOOLEAN := FALSE;
   begin
     PRINTSTATS := FALSE; 
     SYNTAXERROR := FALSE; 
@@ -294,6 +306,13 @@ package body MAIN_BODY is
             BACKTRACK_REPORT := TRUE; 
           when 'd' => 
             DDEBUG := TRUE; 
+          when 'D' =>
+            if (FLAG_POS /= 2) then
+              MISC.AFLEXERROR("-D flag must be given separately");
+            end if;
+            DFA_TEMPLATE_NAME := SLICE(ARG, FLAG_POS + 1, LEN(ARG));
+            DFA_TEMPLATE_NAME_USED := TRUE;
+            goto GET_NEXT_ARG;
           when 'f' => 
             USEECS := FALSE; 
             USEMECS := FALSE; 
@@ -306,6 +325,13 @@ package body MAIN_BODY is
             GEN_LINE_DIRS := FALSE; 
           when 'p' => 
             PERFORMANCE_REPORT := TRUE; 
+          when 'O' =>
+            if (FLAG_POS /= 2) then
+              MISC.AFLEXERROR("-O flag must be given separately");
+            end if;
+            IO_TEMPLATE_NAME := SLICE(ARG, FLAG_POS + 1, LEN(ARG));
+            IO_TEMPLATE_NAME_USED := TRUE;
+            goto GET_NEXT_ARG;
           when 'S' => 
             if (FLAG_POS /= 2) then 
               MISC.AFLEXERROR("-S flag must be given separately"); 
@@ -346,6 +372,13 @@ package body MAIN_BODY is
       MISC.AFLEXERROR("full table and -I are (currently) incompatible"); 
     end if; 
 
+    if (SKELNAME_USED or DFA_TEMPLATE_NAME_USED or IO_TEMPLATE_NAME_USED)
+      and then not (SKELNAME_USED and DFA_TEMPLATE_NAME_USED and
+        IO_TEMPLATE_NAME_USED)
+    then
+      MISC.AFLEXERROR("-S, -D and -O must be given together");
+    end if;
+
     if (ARG_CNT < ARGC) then 
       begin
         if (ARG_CNT - ARGC > 1) then 
@@ -385,9 +418,29 @@ package body MAIN_BODY is
         OPEN(SKELFILE, IN_FILE, STR(SKELNAME)); 
         SKELETON_MANAGER.SET_EXTERNAL_SKELETON; 
       end if; 
+
+      if (DFA_TEMPLATE_NAME_USED) then
+        OPEN(DFA_TEMPLATE_FILE, IN_FILE, STR(DFA_TEMPLATE_NAME));
+        TEMPLATE_MANAGER.SET_EXTERNAL_DFA_TEMPLATE;
+      end if;
+
+      if (IO_TEMPLATE_NAME_USED) then
+        OPEN(IO_TEMPLATE_FILE, IN_FILE, STR(IO_TEMPLATE_NAME));
+        TEMPLATE_MANAGER.SET_EXTERNAL_IO_TEMPLATE;
+      end if;
     exception
       when USE_ERROR | NAME_ERROR => 
-        MISC.AFLEXFATAL("couldn't open skeleton file " & SKELNAME); 
+        if SKELNAME_USED and then not IS_OPEN(SKELFILE) then
+          MISC.AFLEXFATAL("couldn't open skeleton file " & SKELNAME);
+        elsif DFA_TEMPLATE_NAME_USED and then
+          not IS_OPEN(DFA_TEMPLATE_FILE)
+        then
+          MISC.AFLEXFATAL("couldn't open DFA template file " &
+            DFA_TEMPLATE_NAME);
+        else
+          MISC.AFLEXFATAL("couldn't open IO template file " &
+            IO_TEMPLATE_NAME);
+        end if;
     end; 
 
     -- without a third argument create make an anonymous temp file.

@@ -1,0 +1,77 @@
+#!/bin/sh
+
+set -eu
+
+if [ "$#" -ne 1 ]; then
+	echo "usage: $0 <ayacc>" >&2
+	exit 2
+fi
+
+ayacc=$1
+case "$ayacc" in
+	/*) ;;
+	*) ayacc=$(pwd)/$ayacc ;;
+esac
+
+workdir=$(mktemp -d "${TMPDIR:-/tmp}/ayacc-template.XXXXXX")
+trap 'rm -rf "$workdir"' EXIT HUP INT TERM
+
+mkdir "$workdir/embedded" "$workdir/external" "$workdir/missing"
+for directory in embedded external missing; do
+	cp ../../ayacc/examples/calc/calc.y "$workdir/$directory/input.y"
+done
+
+cat > "$workdir/external/template" <<'EOF'
+procedure YYParse is
+-- EXTERNAL-TEMPLATE-BEGIN
+%%
+begin
+%%
+null;
+%%
+end YYParse;
+-- EXTERNAL-TEMPLATE-END
+EOF
+
+
+run_ayacc()
+{
+	TZ=UTC "$ayacc" "$@"
+}
+
+(
+	cd "$workdir/embedded"
+	run_ayacc "File=>input.y" > embedded.log
+)
+
+test -s "$workdir/embedded/input.a"
+! grep -q 'EXTERNAL-TEMPLATE' "$workdir/embedded/input.a"
+
+(
+	cd "$workdir/external"
+	run_ayacc \
+		"Template=>$workdir/external/template" \
+		"File=>input.y" > external.log
+)
+
+grep -q 'EXTERNAL-TEMPLATE-BEGIN' "$workdir/external/input.a"
+grep -q 'EXTERNAL-TEMPLATE-END' "$workdir/external/input.a"
+for output in input_tokens.ads input_shift_reduce.ads input_goto.ads; do
+	cmp "$workdir/embedded/$output" "$workdir/external/$output"
+done
+
+if (
+	cd "$workdir/missing"
+	run_ayacc \
+		"Template=>$workdir/missing/template" \
+		"File=>input.y" > missing.log
+); then
+	echo "ayacc accepted a missing external template" >&2
+	exit 1
+fi
+
+grep -Fq 'Ayacc: Error Opening Template ' \
+	"$workdir/missing/missing.log"
+grep -Fq "$workdir/missing/template" "$workdir/missing/missing.log"
+
+echo "external Ayacc template checks passed"

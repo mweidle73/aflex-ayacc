@@ -15,7 +15,7 @@ package body Ayacc_File_Names is
     Source_File_Name       : STR(Max_Name_Length);
     Out_File_Name          : STR(Max_Name_Length);
     Verbose_File_Name      : STR(Max_Name_Length);
-    Template_File_Name     : STR(Max_Name_Length);
+    Template_File_Name     : String_Pkg.String_Type := String_Pkg.Create("");
     Actions_File_Name      : STR(Max_Name_Length);
     Shift_Reduce_File_Name : STR(Max_Name_Length);
     Goto_File_Name         : STR(Max_Name_Length);
@@ -151,8 +151,13 @@ package body Ayacc_File_Names is
 
     function  Get_Template_File_Name return String is
     begin
-	return Value_of(Template_File_Name);
+	return String_Pkg.Value(Template_File_Name);
     end;
+
+    procedure Set_Template_File_Name(Name: in String) is
+    begin
+	Template_File_Name := String_Pkg.Create(Name);
+    end Set_Template_File_Name;
 
     function  Get_Actions_File_Name return String is
     begin
@@ -230,8 +235,6 @@ package body Ayacc_File_Names is
 	Assign(Base,        To => Listing_File_Name);
         Append(".lis", To => Listing_File_Name); 
 -- END OF UMASS CODES.
-
-	Assign("yyparse.template", To => Template_File_Name);
 
 	Assign(Base,    To => Actions_File_Name);
 	Append(".accs", To => Actions_File_Name);

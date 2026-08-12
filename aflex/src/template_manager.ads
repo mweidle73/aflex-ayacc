@@ -28,6 +28,8 @@
 -- $Header: /co/ua/self/arcadia/aflex/ada/src/RCS/template_managerS.a,v 1.3 90/01/12 15:20:49 self Exp Locker: self $ 
 
 package TEMPLATE_MANAGER is 
+  procedure SET_EXTERNAL_DFA_TEMPLATE;
+  procedure SET_EXTERNAL_IO_TEMPLATE;
   procedure GENERATE_DFA_FILE; 
   procedure GENERATE_IO_FILE; 
 end TEMPLATE_MANAGER; 

@@ -49,7 +49,7 @@
 -- version 4.06 on a vax 11/750 running Unix 4.2BSD.
 --  
 
-with Text_IO, Ayacc_File_Names;
+with Ada.Command_Line, Text_IO, Ayacc_File_Names;
 use  Text_IO, Ayacc_File_Names;
 
 with String_Pkg;  use String_Pkg;
@@ -64,6 +64,8 @@ package body Parse_Template_File is
     
 
   File_Pointer : Natural := 0;
+  External_File : File_Type;
+  Use_External  : Boolean := False;
 
   type File_Data is array (Positive range <>) of String_Type;
 
@@ -1290,22 +1292,49 @@ package body Parse_Template_File is
 
     procedure Open is 
     begin
-      File_Pointer := YYParse_Template_File'First;
+      Use_External := Get_Template_File_Name /= "";
+      if Use_External then
+        begin
+          Text_IO.Open
+            (File => External_File,
+             Mode => In_File,
+             Name => Get_Template_File_Name);
+        exception
+          when Name_Error | Use_Error =>
+            Put_Line
+              ("Ayacc: Error Opening Template """
+               & Get_Template_File_Name & """.");
+            Ada.Command_Line.Set_Exit_Status (Ada.Command_Line.Failure);
+            raise;
+        end;
+      else
+        File_Pointer := YYParse_Template_File'First;
+      end if;
     end Open;
 
     procedure Close is
     begin
+      if Is_Open(External_File) then
+        Text_IO.Close(External_File);
+      end if;
+      Use_External := False;
       File_Pointer := 0;
     end Close;
 
-    procedure Read (S: out String; Length : out Integer) is 
-      Next_Line : constant String  :=
-                    String_Pkg.Value (YYParse_Template_File (File_Pointer));
+    procedure Read (S: out String; Length : out Integer) is
     begin
-      S      := Next_Line & (1 .. S'Length - Next_Line'Length => ' ');
-      Length := Next_Line'Length;
-
-      File_Pointer := File_Pointer + 1;
+      if Use_External then
+        Text_IO.Get_Line(External_File, S, Length);
+      else
+        declare
+          Next_Line : constant String :=
+            String_Pkg.Value (YYParse_Template_File (File_Pointer));
+        begin
+          S := Next_Line & (1 .. S'Length - Next_Line'Length => ' ');
+          Length := Next_Line'Length;
+          File_Pointer := File_Pointer + 1;
+        end;
+      end if;
     exception
       when Constraint_Error =>
         if Is_End_of_File then
@@ -1317,7 +1346,11 @@ package body Parse_Template_File is
 
     function Is_End_of_File return Boolean is
     begin
-      return File_Pointer = (YYParse_Template_File'Last + 1);
+      if Use_External then
+        return Text_IO.End_Of_File(External_File);
+      else
+        return File_Pointer = (YYParse_Template_File'Last + 1);
+      end if;
     end Is_End_of_File;
 
 end Parse_Template_File;

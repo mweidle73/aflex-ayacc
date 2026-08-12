@@ -49,7 +49,7 @@ separate (Ayacc)
 procedure Initialize is
   use Ayacc_File_Names, Options;
 
-  Input_File, Extension, Options : String_Type := Create ("");
+  Input_File, Template_File, Extension, Options : String_Type := Create ("");
 
   type Switch is ( On , Off );
 
@@ -71,6 +71,7 @@ procedure Initialize is
 -- UMASS CODES : 
 			   Error_Recovery : out Switch;
 -- END OF UMASS CODES.
+			   Template       : out String_Type;
 			   Extension      : out String_Type) is separate;
   
 begin
@@ -83,6 +84,7 @@ begin
 -- UMASS CODES :
                  Error_Recovery_Flag,
 -- END OF UMASS CODES.
+		 Template_File,
 		 Extension);
 
   New_Line;
@@ -99,6 +101,7 @@ begin
   Put_Line ("         Error_Recovery => " &
                         Value (Mixed (Switch'Image(Error_Recovery_Flag))) & ",");
 -- END OF UMASS CODES.
+  Put_Line ("         Template       => """ & Value (Template_File) & """,");
   Put_Line ("         Extension      => """ & Value (Extension) & """);");
   New_Line;
 
@@ -125,6 +128,7 @@ begin
 -- END OF UMASS CODES.
 
   Set_File_Names (Value (Input_File), Value(Extension));
+  Set_Template_File_Name (Value (Template_File));
   Set_Options    (Value (Options));
 
 exception

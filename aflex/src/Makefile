@@ -1,10 +1,11 @@
 TARGET = aflex
 PREFIX = /usr/local
 BINDIR = $(PREFIX)/bin
+SOURCES = $(wildcard *.adb *.ads)
 
 all: $(TARGET)
 
-$(TARGET):
+$(TARGET): $(SOURCES)
 	gnatmake $@
 
 clean:
@@ -13,4 +14,7 @@ clean:
 install: $(TARGET)
 	install -v -m 755 -D $(TARGET) $(DESTDIR)/$(BINDIR)/$(TARGET)
 
-.PHONY: all clean install
+check: $(TARGET)
+	../tests/check-external-templates ./$(TARGET)
+
+.PHONY: all check clean install

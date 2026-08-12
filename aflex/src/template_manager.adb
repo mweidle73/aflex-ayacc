@@ -30,6 +30,9 @@
 with FILE_STRING, MISC_DEFS, TEXT_IO, EXTERNAL_FILE_MANAGER, MISC, TSTRING; use 
   FILE_STRING, MISC_DEFS, TEXT_IO; 
 package body TEMPLATE_MANAGER is 
+  USE_EXTERNAL_DFA_TEMPLATE : BOOLEAN := FALSE;
+  USE_EXTERNAL_IO_TEMPLATE  : BOOLEAN := FALSE;
+
 
   type FILE_ARRAY is array(POSITIVE range <>) of VSTRING; 
 
@@ -563,6 +566,33 @@ VSTR("")
 
   IO_CURRENT_LINE  : INTEGER := 1; 
 
+  procedure SET_EXTERNAL_DFA_TEMPLATE is
+  begin
+    USE_EXTERNAL_DFA_TEMPLATE := TRUE;
+  end SET_EXTERNAL_DFA_TEMPLATE;
+
+  procedure SET_EXTERNAL_IO_TEMPLATE is
+  begin
+    USE_EXTERNAL_IO_TEMPLATE := TRUE;
+  end SET_EXTERNAL_IO_TEMPLATE;
+
+  procedure OUTPUT_TEMPLATE_LINE(OUTFILE     : in FILE_TYPE;
+                                 BUF         : in VSTRING;
+                                 UMASS_CODES : in out BOOLEAN) is
+  begin
+    if FILE_STRING.STR(BUF) = "-- UMASS CODES :" then
+      UMASS_CODES := TRUE;
+    end if;
+
+    if not UMASS_CODES or else Ayacc_Extension_Flag then
+      FILE_STRING.PUT_LINE(OUTFILE, BUF);
+    end if;
+
+    if FILE_STRING.STR(BUF) = "-- END OF UMASS CODES." then
+      UMASS_CODES := FALSE;
+    end if;
+  end OUTPUT_TEMPLATE_LINE;
+
   procedure TEMPLATE_OUT(OUTFILE          : in FILE_TYPE; 
                          CURRENT_TEMPLATE : in FILE_ARRAY; 
                          LINE_NUMBER      : in out INTEGER) is 
@@ -585,18 +615,7 @@ VSTR("")
 --   "-- END OF UMASS CODES." are specific to be used by Ayacc-extension.
 --   Ayacc-extension has more power in error recovery. So we 
 --   generate those codes only when Ayacc_Extension_Flag is True.
-        if FILE_STRING.STR(BUF) = "-- UMASS CODES :" then
-          Umass_Codes := True;
-        end if;
-
-        if not Umass_Codes or else
-           Ayacc_Extension_Flag then 
-          FILE_STRING.PUT_LINE(OUTFILE,BUF); 
-        end if;
-
-        if FILE_STRING.STR(BUF) = "-- END OF UMASS CODES." then
-          Umass_Codes := False;
-        end if;
+        OUTPUT_TEMPLATE_LINE(OUTFILE, BUF, Umass_Codes);
 -- END OF UMASS CODES.
 
 -- UCI CODES commented out :
@@ -606,6 +625,42 @@ VSTR("")
       end if; 
     end loop; 
   end TEMPLATE_OUT; 
+
+  procedure EXTERNAL_TEMPLATE_OUT(OUTFILE       : in FILE_TYPE;
+                                  TEMPLATE_FILE : in FILE_TYPE) is
+    BUF         : VSTRING;
+    UMASS_CODES : BOOLEAN := FALSE;
+  begin
+    while not TEXT_IO.END_OF_FILE(TEMPLATE_FILE) loop
+      FILE_STRING.GET_LINE(TEMPLATE_FILE, BUF);
+      if FILE_STRING.LEN(BUF) >= 2 and then
+        FILE_STRING.CHAR(BUF, 1) = '%' and then
+        FILE_STRING.CHAR(BUF, 2) = '%'
+      then
+        exit;
+      else
+        OUTPUT_TEMPLATE_LINE(OUTFILE, BUF, UMASS_CODES);
+      end if;
+    end loop;
+  end EXTERNAL_TEMPLATE_OUT;
+
+  procedure DFA_TEMPLATE_OUT(OUTFILE : in FILE_TYPE) is
+  begin
+    if USE_EXTERNAL_DFA_TEMPLATE then
+      EXTERNAL_TEMPLATE_OUT(OUTFILE, DFA_TEMPLATE_FILE);
+    else
+      TEMPLATE_OUT(OUTFILE, DFA_TEMPLATE, DFA_CURRENT_LINE);
+    end if;
+  end DFA_TEMPLATE_OUT;
+
+  procedure IO_TEMPLATE_OUT(OUTFILE : in FILE_TYPE) is
+  begin
+    if USE_EXTERNAL_IO_TEMPLATE then
+      EXTERNAL_TEMPLATE_OUT(OUTFILE, IO_TEMPLATE_FILE);
+    else
+      TEMPLATE_OUT(OUTFILE, IO_TEMPLATE, IO_CURRENT_LINE);
+    end if;
+  end IO_TEMPLATE_OUT;
 
   procedure GENERATE_DFA_FILE is 
     DFA_OUT_FILE : FILE_TYPE; 
@@ -622,7 +677,7 @@ VSTR("")
     else 
       TEXT_IO.PUT_LINE(DFA_OUT_FILE, "aflex_debug : boolean := false;"); 
     end if; 
-    TEMPLATE_OUT(DFA_OUT_FILE, DFA_TEMPLATE, DFA_CURRENT_LINE); 
+    DFA_TEMPLATE_OUT(DFA_OUT_FILE);
     TEXT_IO.PUT_LINE(DFA_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_DFA;"
       ); 
     TEXT_IO.NEW_LINE(DFA_OUT_FILE); 
@@ -632,7 +687,7 @@ VSTR("")
       & "; "); 
     TEXT_IO.PUT_LINE(DFA_OUT_FILE, "package body " & TSTRING.TRANSFORM(BNAME)
       & "_DFA" & " is");
-    TEMPLATE_OUT(DFA_OUT_FILE, DFA_TEMPLATE, DFA_CURRENT_LINE); 
+    DFA_TEMPLATE_OUT(DFA_OUT_FILE);
     TEXT_IO.PUT_LINE(DFA_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_DFA;"
       ); 
   end GENERATE_DFA_FILE; 
@@ -646,16 +701,16 @@ VSTR("")
       "; "); 
     TEXT_IO.PUT_LINE(IO_OUT_FILE, "use " & TSTRING.TRANSFORM(BNAME) & "_DFA"
       & "; "); 
-    TEMPLATE_OUT(IO_OUT_FILE, IO_TEMPLATE, IO_CURRENT_LINE); 
+    IO_TEMPLATE_OUT(IO_OUT_FILE);
     TEXT_IO.PUT_LINE(IO_OUT_FILE, "package " & TSTRING.TRANSFORM(BNAME) &
       "_IO" & " is");
-    TEMPLATE_OUT(IO_OUT_FILE, IO_TEMPLATE, IO_CURRENT_LINE); 
+    IO_TEMPLATE_OUT(IO_OUT_FILE);
     TEXT_IO.PUT_LINE(IO_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_IO;")
       ; 
     TEXT_IO.NEW_LINE(IO_OUT_FILE); 
     TEXT_IO.PUT_LINE(IO_OUT_FILE, "package body " & TSTRING.TRANSFORM(BNAME)
       & "_IO" & " is");
-    TEMPLATE_OUT(IO_OUT_FILE, IO_TEMPLATE, IO_CURRENT_LINE); 
+    IO_TEMPLATE_OUT(IO_OUT_FILE);
     -- If we're generating a scanner for interactive mode we need to generate
     -- a YY_INPUT that stops at the end of each line
     if INTERACTIVE then
@@ -664,7 +719,7 @@ VSTR("")
 	TEXT_IO.PUT_LINE(IO_OUT_FILE,
 	    "            exit; -- in interactive mode return at end of line.");
     end if;
-    TEMPLATE_OUT(IO_OUT_FILE, IO_TEMPLATE, IO_CURRENT_LINE);     
+    IO_TEMPLATE_OUT(IO_OUT_FILE);
     TEXT_IO.PUT_LINE(IO_OUT_FILE, "end " & TSTRING.TRANSFORM(BNAME) & "_IO;")
       ; 
   end GENERATE_IO_FILE; 

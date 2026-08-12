@@ -1,0 +1,128 @@
+#!/bin/sh
+
+set -eu
+
+if [ "$#" -ne 1 ]; then
+	echo "usage: $0 <aflex>" >&2
+	exit 2
+fi
+
+aflex=$1
+case "$aflex" in
+	/*) ;;
+	*) aflex=$(pwd)/$aflex ;;
+esac
+
+workdir=$(mktemp -d "${TMPDIR:-/tmp}/aflex-template.XXXXXX")
+trap 'rm -rf "$workdir"' EXIT HUP INT TERM
+
+mkdir "$workdir/embedded" "$workdir/external" "$workdir/missing"
+for directory in embedded external missing; do
+	cp ../doc/example.l "$workdir/$directory/input.l"
+done
+
+cat > "$workdir/external/scanner.template" <<'EOF'
+-- EXTERNAL-SCANNER-1
+%%
+-- EXTERNAL-SCANNER-2
+%%
+-- EXTERNAL-SCANNER-3
+%%
+-- EXTERNAL-SCANNER-4
+%%
+-- EXTERNAL-SCANNER-5
+%%
+-- EXTERNAL-SCANNER-6
+%%
+-- EXTERNAL-SCANNER-7
+%%
+-- EXTERNAL-SCANNER-8
+%%
+-- EXTERNAL-SCANNER-9
+EOF
+
+cat > "$workdir/external/dfa.template" <<'EOF'
+-- EXTERNAL-DFA-SPEC
+%%
+-- EXTERNAL-DFA-BODY
+EOF
+
+cat > "$workdir/external/io.template" <<'EOF'
+-- EXTERNAL-IO-CONTEXT
+%%
+-- EXTERNAL-IO-SPEC
+%%
+-- EXTERNAL-IO-BODY-BEGIN
+%%
+-- EXTERNAL-IO-BODY-END
+EOF
+
+(
+	cd "$workdir/embedded"
+	"$aflex" input.l
+)
+
+(
+	cd "$workdir/external"
+	"$aflex" \
+		"-S$workdir/external/scanner.template" \
+		"-D$workdir/external/dfa.template" \
+		"-O$workdir/external/io.template" input.l
+)
+
+grep -q 'EXTERNAL-SCANNER-1' "$workdir/external/input.a"
+grep -q 'EXTERNAL-SCANNER-9' "$workdir/external/input.a"
+grep -q 'EXTERNAL-DFA-SPEC' "$workdir/external/input_dfa.a"
+grep -q 'EXTERNAL-DFA-BODY' "$workdir/external/input_dfa.a"
+grep -q 'EXTERNAL-IO-CONTEXT' "$workdir/external/input_io.a"
+grep -q 'EXTERNAL-IO-SPEC' "$workdir/external/input_io.a"
+grep -q 'EXTERNAL-IO-BODY-BEGIN' "$workdir/external/input_io.a"
+grep -q 'EXTERNAL-IO-BODY-END' "$workdir/external/input_io.a"
+
+if (
+	cd "$workdir/missing"
+	"$aflex" \
+		"-S$workdir/external/scanner.template" \
+		"-D$workdir/missing/dfa.template" \
+		"-O$workdir/external/io.template" input.l \
+		> missing.log 2>&1
+); then
+	echo "aflex accepted a missing DFA template" >&2
+	exit 1
+fi
+
+grep -Fq "couldn't open DFA template file" \
+	"$workdir/missing/missing.log"
+grep -Fq "$workdir/missing/dfa.template" \
+	"$workdir/missing/missing.log"
+
+if (
+	cd "$workdir/missing"
+	"$aflex" \
+		"-S$workdir/external/scanner.template" \
+		"-D$workdir/external/dfa.template" \
+		"-O$workdir/missing/io.template" input.l \
+		> missing-io.log 2>&1
+); then
+	echo "aflex accepted a missing IO template" >&2
+	exit 1
+fi
+
+grep -Fq "couldn't open IO template file" \
+	"$workdir/missing/missing-io.log"
+grep -Fq "$workdir/missing/io.template" \
+	"$workdir/missing/missing-io.log"
+
+if (
+	cd "$workdir/missing"
+	"$aflex" "-S$workdir/external/scanner.template" input.l \
+		> incomplete.log 2>&1
+); then
+	echo "aflex accepted an incomplete external template set" >&2
+	exit 1
+fi
+
+grep -Fq -- '-S, -D and -O must be given together' \
+	"$workdir/missing/incomplete.log"
+
+echo "external Aflex template checks passed"

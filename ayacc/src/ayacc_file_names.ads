@@ -61,6 +61,10 @@ package Ayacc_File_Names is
     -- Sets the initial value of the file names
     -- according to the INPUT_FILE.
 
+    procedure Set_Template_File_Name(Name: in String);
+    -- Selects an external parser template. An empty name retains the
+    -- historical template embedded in the Ayacc executable.
+
     function  Get_Source_File_Name        return String;
     function  Get_Out_File_Name           return String;
     function  Get_Verbose_File_Name       return String;

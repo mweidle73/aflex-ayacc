@@ -12,6 +12,7 @@ procedure Get_Arguments (File           : out String_Type;
 -- UMASS CODES :
                          Error_Recovery : out Switch;
 -- END OF UMASS CODES.
+			 Template       : out String_Type;
 			 Extension      : out String_Type) is 
 
   C_Lex_Argument   : String_Type;
@@ -28,7 +29,8 @@ procedure Get_Arguments (File           : out String_Type;
   Total          : Natural := 0; 
 
   -- Total number of parameters
-  Max_Parameters : constant := 7;
+  Max_Parameters            : constant := 8;
+  Max_Positional_Parameters : constant := 7;
 
   Incorrect_Call : exception; 
 
@@ -64,6 +66,7 @@ procedure Get_Arguments (File           : out String_Type;
 -- UMASS CODES :
     Put_Line ("                   Error_Recovery : in Switch := Off;");
 -- END OF UMASS CODES.
+    Put_Line ("                   Template       : in String := """";");
     Put_Line ("                   Extension      : in String := "".adb"");"); 
     New_Line; 
     Put_Line ("  -- File       Specifies the Ayacc Input Source File."); 
@@ -78,6 +81,7 @@ procedure Get_Arguments (File           : out String_Type;
     Put_Line ("  -- Error_Recovery  Specifies the Generation of extension of");
     Put_Line ("  --                   error recovery.");
 -- END OF UMASS CODES.
+    Put_Line ("  -- Template   Selects an external parser template.");
     Put_Line ("  -- Extension  Specifies the file extension to be used for");
     Put_Line ("                  generated Ada files.");
     New_Line;
@@ -93,7 +97,8 @@ begin
 
   if Total = 0 then
     raise Incorrect_Call;
-  elsif Total > Max_Parameters then 
+  elsif Total > Max_Parameters or else
+        Positional > Max_Positional_Parameters then
     Put_Line ("Ayacc: Too many parameters."); 
     raise Incorrect_Call; 
   end if; 
@@ -107,6 +112,7 @@ begin
 -- UMASS CODES :
   Error_Recovery_Argument := Named_Arg_Value ("Error_Recovery",   "Off");
 -- END OF UMASS CODES.
+  Template         := Named_Arg_Value ("Template", "");
   Extension        := Named_Arg_Value ("Extension", ".a");
 
   -- Get any positional associations
@@ -124,8 +130,8 @@ begin
             if Positional >= 6 then
               Error_Recovery_Argument := Positional_Arg_Value (5);
 -- END OF UMASS CODES.
-              if Positional = Max_Parameters then
-                Extension := Positional_Arg_Value (Max_Parameters); 
+              if Positional = Max_Positional_Parameters then
+                Extension := Positional_Arg_Value (Max_Positional_Parameters);
 	      end if;
 -- UMASS CODES :
             end if;

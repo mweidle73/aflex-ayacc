@@ -38,6 +38,31 @@ make -j8
 
 The resulting programs are `aflex/src/aflex` and `ayacc/src/ayacc`.
 
+The maintained Aflex accepts optional `-S<file>`, `-D<file>` and `-O<file>`
+arguments for its main scanner, DFA-package and IO-package templates. All three
+must be supplied together; omitting all of them retains the historical
+embedded templates. This prevents a consumer from claiming an external
+runtime while silently retaining one embedded family. The three switches
+allow consumers to own all runtime templates copied into generated scanners
+without changing Aflex's DFA construction.
+
+The maintained Ayacc accepts an optional named `Template` argument. An empty
+value retains the historical embedded parser template; a path selects an
+external template with the same three `%%` insertion points. This interface
+allows consumers to own their generated parser runtime without changing
+Ayacc's grammar and parse-table construction.
+
+Run the external-template seam checks from the repository root:
+
+```sh
+make -j8 check
+```
+
+The checks prove that every external template family is selected, that Ayacc's
+parse tables remain unchanged and that missing or incomplete template sets are
+diagnosed. Separate Abuild parity evidence covers the complete generated
+output of both production grammars.
+
 ## Continuous integration
 
 The historical distribution contains no independent unit-test suite. The
