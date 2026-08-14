@@ -16,6 +16,9 @@ echo "ci: building Aflex and Ayacc"
 make -C "$REPOSITORY_ROOT" clean
 make -C "$REPOSITORY_ROOT" -j8
 
+echo "ci: checking external runtime-template selection"
+make -C "$REPOSITORY_ROOT" check
+
 echo "ci: generating the calculator parser and scanner"
 cp "$REPOSITORY_ROOT/ayacc/examples/calc/calc.y" "$WORK_DIR/"
 cp "$REPOSITORY_ROOT/ayacc/examples/calc/calc_lex.l" "$WORK_DIR/"
